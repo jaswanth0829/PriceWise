@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>PriceWise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>PriceWise</h1>
+
+    <p>Track product prices automatically.</p>
+
+    <form method="POST">
+
+        <input type="text"
+               name="url"
+               placeholder="Enter Product URL"
+               required>
+
+        <input type="number"
+               step="0.01"
+               name="target_price"
+               placeholder="Target Price"
+               required>
+
+        <button type="submit">
+
+            Track Product
+
+        </button>
+
+    </form>
+
+    <h2>Tracked Products</h2>
+
+    <div class="products">
+
+        {% for product in products %}
+
+        <div class="product-card">
+
+            <h3>{{ product[1] }}</h3>
+
+            <p>Current Price: ₹ {{ product[2] }}</p>
+
+            <p>Target Price: ₹ {{ product[4] }}</p>
+
+            {% if product[2]|float <= product[4]|float %}
+
+                <p class="alert">
+
+                    🔔 Price Dropped!
+
+                </p>
+
+            {% endif %}
+
+            <a href="/delete/{{ product[0] }}">
+
+                <button class="delete-btn">
+
+                    Delete
+
+                </button>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <canvas id="priceChart"></canvas>
+
+    <h2>Price History</h2>
+
+    <table>
+
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Date</th>
+        </tr>
+
+        {% for item in history %}
+
+        <tr>
+
+            <td>{{ item[0] }}</td>
+
+            <td>₹ {{ item[1] }}</td>
+
+            <td>{{ item[2] }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<script>
+
+const productLabels = [
+    {% for product in products %}
+        "{{ product[1] }}",
+    {% endfor %}
+];
+
+const productPrices = [
+    {% for product in products %}
+        {{ product[2] }},
+    {% endfor %}
+];
+
+const ctx = document.getElementById('priceChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: productLabels,
+
+        datasets: [{
+
+            label: 'Product Prices',
+
+            data: productPrices,
+
+            borderWidth: 1
+
+        }]
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>
