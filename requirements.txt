@@ -3,3 +3,6 @@ requests
 beautifulsoup4
 schedule
 gunicorn
+lxml
+flask-login
+flask-mail

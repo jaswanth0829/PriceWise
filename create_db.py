@@ -1,14 +1,32 @@
 import sqlite3
 
-conn = sqlite3.connect("database.db")
+conn = sqlite3.connect(
+    "database.db"
+)
 
 cursor = conn.cursor()
 
-# Products table
+# USERS TABLE
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    username TEXT UNIQUE,
+
+    email TEXT UNIQUE,
+
+    password TEXT
+)
+""")
+
+# PRODUCTS TABLE
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS products (
 
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    user_id INTEGER,
 
     name TEXT,
 
@@ -20,7 +38,7 @@ CREATE TABLE IF NOT EXISTS products (
 )
 """)
 
-# Price history table
+# PRICE HISTORY TABLE
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS price_history (
 
@@ -38,4 +56,6 @@ conn.commit()
 
 conn.close()
 
-print("Database created successfully")
+print(
+    "Database created successfully"
+)

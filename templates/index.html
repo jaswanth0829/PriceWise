@@ -5,8 +5,10 @@
 
     <title>PriceWise</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -14,142 +16,299 @@
 
 <body>
 
-<div class="container">
+    <!-- NAVBAR -->
 
-    <h1>PriceWise</h1>
+    <nav class="navbar">
 
-    <p>Track product prices automatically.</p>
+        <div class="logo">
 
-    <form method="POST">
-
-        <input type="text"
-               name="url"
-               placeholder="Enter Product URL"
-               required>
-
-        <input type="number"
-               step="0.01"
-               name="target_price"
-               placeholder="Target Price"
-               required>
-
-        <button type="submit">
-
-            Track Product
-
-        </button>
-
-    </form>
-
-    <h2>Tracked Products</h2>
-
-    <div class="products">
-
-        {% for product in products %}
-
-        <div class="product-card">
-
-            <h3>{{ product[1] }}</h3>
-
-            <p>Current Price: ₹ {{ product[2] }}</p>
-
-            <p>Target Price: ₹ {{ product[4] }}</p>
-
-            {% if product[2]|float <= product[4]|float %}
-
-                <p class="alert">
-
-                    🔔 Price Dropped!
-
-                </p>
-
-            {% endif %}
-
-            <a href="/delete/{{ product[0] }}">
-
-                <button class="delete-btn">
-
-                    Delete
-
-                </button>
-
-            </a>
+            PriceWise
 
         </div>
 
-        {% endfor %}
+        <div class="nav-links">
+
+            <a href="/">Dashboard</a>
+
+            <a href="/api/products">
+
+                API
+
+            </a>
+
+            <button id="darkModeToggle">
+
+                Dark Mode
+
+            </button>
+
+        </div>
+
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+
+    <div class="container">
+
+        <!-- HERO SECTION -->
+
+        <div class="hero">
+
+            <h1>
+
+                Product Price Tracker
+
+            </h1>
+
+            <p>
+
+                Track and analyze product prices automatically.
+
+            </p>
+
+        </div>
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <h2>
+
+                    {{ products|length }}
+
+                </h2>
+
+                <p>
+
+                    Products Tracked
+
+                </p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h2>
+
+                    {{ history|length }}
+
+                </h2>
+
+                <p>
+
+                    Price Records
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- FORM -->
+
+        <div class="form-card">
+
+            <form method="POST">
+
+                <input
+                    type="text"
+                    name="url"
+                    placeholder="Enter Product URL"
+                    required
+                >
+
+                <input
+                    type="number"
+                    step="0.01"
+                    name="target_price"
+                    placeholder="Target Price"
+                    required
+                >
+
+                <button type="submit">
+
+                    Track Product
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- PRODUCTS -->
+
+        <h2 class="section-title">
+
+            Tracked Products
+
+        </h2>
+
+        <div class="products">
+
+            {% for product in products %}
+
+            <div class="product-card">
+
+                <h3>
+
+                    {{ product[1] }}
+
+                </h3>
+
+                <p>
+
+                    Current Price:
+                    ₹ {{ product[2] }}
+
+                </p>
+
+                <p>
+
+                    Target Price:
+                    ₹ {{ product[4] }}
+
+                </p>
+
+                {% if product[2]|float <= product[4]|float %}
+
+                <p class="alert">
+
+                    Price Dropped!
+
+                </p>
+
+                {% endif %}
+
+                <a href="/delete/{{ product[0] }}">
+
+                    <button class="delete-btn">
+
+                        Delete
+
+                    </button>
+
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- CHART -->
+
+        <div class="chart-card">
+
+            <h2 class="section-title">
+
+                Price Analytics
+
+            </h2>
+
+            <canvas id="priceChart"></canvas>
+
+        </div>
+
+        <!-- HISTORY -->
+
+        <h2 class="section-title">
+
+            Price History
+
+        </h2>
+
+        <table>
+
+            <tr>
+
+                <th>Product</th>
+
+                <th>Price</th>
+
+                <th>Date</th>
+
+            </tr>
+
+            {% for item in history %}
+
+            <tr>
+
+                <td>{{ item[0] }}</td>
+
+                <td>₹ {{ item[1] }}</td>
+
+                <td>{{ item[2] }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
 
     </div>
 
-    <canvas id="priceChart"></canvas>
+    <!-- CHART JS -->
 
-    <h2>Price History</h2>
+    <script>
 
-    <table>
+    const productLabels = [
 
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Date</th>
-        </tr>
+        {% for product in products %}
 
-        {% for item in history %}
-
-        <tr>
-
-            <td>{{ item[0] }}</td>
-
-            <td>₹ {{ item[1] }}</td>
-
-            <td>{{ item[2] }}</td>
-
-        </tr>
+            "{{ product[1] }}",
 
         {% endfor %}
 
-    </table>
+    ];
 
-</div>
+    const productPrices = [
 
-<script>
+        {% for product in products %}
 
-const productLabels = [
-    {% for product in products %}
-        "{{ product[1] }}",
-    {% endfor %}
-];
+            {{ product[2] }},
 
-const productPrices = [
-    {% for product in products %}
-        {{ product[2] }},
-    {% endfor %}
-];
+        {% endfor %}
 
-const ctx = document.getElementById('priceChart');
+    ];
 
-new Chart(ctx, {
+    const ctx = document.getElementById(
+        'priceChart'
+    );
 
-    type: 'bar',
+    new Chart(ctx, {
 
-    data: {
+        type: 'bar',
 
-        labels: productLabels,
+        data: {
 
-        datasets: [{
+            labels: productLabels,
 
-            label: 'Product Prices',
+            datasets: [{
 
-            data: productPrices,
+                label: 'Product Prices',
 
-            borderWidth: 1
+                data: productPrices,
 
-        }]
+                borderWidth: 1
 
-    }
+            }]
 
-});
+        }
 
-</script>
+    });
+
+    </script>
+
+    <!-- SCRIPT FILE -->
+
+    <script
+        src="{{ url_for(
+            'static',
+            filename='script.js'
+        ) }}"
+    ></script>
 
 </body>
 
