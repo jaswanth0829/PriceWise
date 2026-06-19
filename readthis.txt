@@ -1,0 +1,183 @@
+PRICEWISE – PRODUCT PRICE TRACKER & ANALYZER
+
+PROJECT DESCRIPTION--
+
+PriceWise is a full-stack web application that helps users track product prices from e-commerce websites
+and receive alerts when prices drop below a target value.The platform stores historical price data,
+visualizes trends using interactive charts, and automatically updates prices using scheduled scraping.
+
+FEATURES--
+
+• User Registration & Login Authentication
+• Product Price Tracking
+• Historical Price Storage
+• Interactive Dashboard with Charts
+• Email Price Drop Alerts
+• Automated Price Updates
+• Responsive Frontend Design
+• REST API Support
+• Dark Mode UI
+• Multi-user Support
+
+---
+TECHNOLOGIES USED--
+
+Backend:
+* Python
+* Flask
+* SQLite
+
+Frontend:
+* HTML
+* CSS
+* JavaScript
+* Chart.js
+
+Automation & Scraping:
+* BeautifulSoup
+* Selenium
+* Schedule
+
+Authentication:
+* Flask Sessions
+* Werkzeug Password Hashing
+
+Email Alerts:
+* Flask-Mail
+
+---
+
+PROJECT STRUCTURE:
+PriceWise/
+│
+├── app.py
+├── config.py
+├── db.py
+├── create_db.py
+├── database.db
+├── requirements.txt
+├── runtime.txt
+│
+├── services/
+│   ├── scraper.py
+│   ├── updater.py
+│   
+│
+├── templates/
+│   ├── index.html
+│   ├── login.html
+│   └── register.html
+│
+├── static/
+    ├── style.css
+    └── script.js
+
+---
+
+HOW TO RUN PROJECT--
+
+1. Install dependencies:
+pip install -r requirements.txt
+
+2. Create database:
+python create_db.py
+
+3. Run Flask application:
+python app.py
+
+4. Run background updater:
+python services/updater.py
+
+---
+
+GITHUB REPOSITORY--
+MY GitHub repository link here:
+https://github.com/jaswanth0829/PriceWise
+
+---
+
+LIVE DEPLOYMENT LINK--
+MY Render deployment link here:
+https://pricewise-d07h.onrender.com
+
+---
+
+FUTURE IMPROVEMENTS--
+
+• Better Amazon/Flipkart scraping
+• Telegram alerts
+• AI-based price prediction
+• PostgreSQL database
+• Docker deployment
+• Admin dashboard
+
+---
+
+AUTHOR--
+Name:
+Jaswanth
+
+Project Type:
+Full-Stack Web Development Project
+
+---
+
+RESUME DESCRIPTION--
+PriceWise – Product Price Tracker & Analyzer
+A full-stack web application to monitor product prices over time, visualize trends, and alert users on price drops.
+• Built a full-stack price tracking platform using Python, Flask and SQLite to store and query historical product price data.
+• Designed interactive dashboards using Chart.js to visualize price history, averages, and trend graphs.
+• Implemented an automated price-fetching mechanism with scheduled scraping to keep product data up to date.
+• Developed a price drop alert system that notifies users when a tracked product falls below their target price.
+• Built a responsive frontend with HTML, CSS and JavaScript; backend follows RESTful API principles using Flask.
+
+---
+
+INSTALLATION COMMANDS USED--
+
+1. Install Flask
+pip install flask
+
+2. Install Requests Library
+pip install requests
+
+3. Install BeautifulSoup
+pip install beautifulsoup4
+
+4. Install Schedule Library
+pip install schedule
+
+5. Install Gunicorn
+pip install gunicorn
+
+6. Install Flask-Login
+pip install flask-login
+
+7. Install Flask-Mail
+pip install flask-mail
+
+8. Install lxml Parser
+pip install lxml
+
+9. Install Selenium
+pip install selenium
+
+10. Install Chrome Driver Manager
+pip install webdriver-manager
+
+11. Install All Requirements Together
+pip install -r requirements.txt
+
+12. Run Flask Application
+python app.py
+
+13. Run Price Updater
+python services/updater.py
+
+14. Create Database
+python create_db.py
+
+15. Push Latest Changes to GitHub--
+git add .
+git commit -m "Updated PriceWise project"
+git push
